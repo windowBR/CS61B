@@ -186,4 +186,20 @@ public class LinkedListDequeTest {
 
         lld.printDeque();
     }
+
+    @Test
+    public void testIterator() {
+        LinkedListDeque<Integer> lld = new LinkedListDeque<>();
+        int testNum = 64;
+        for (int i = 0; i < testNum; i++) {
+            lld.addLast(i);
+        }
+
+        int i = 0;
+        for (Integer itg : lld) {
+            System.out.print("[" + i + "]: ");
+            System.out.println(itg);
+            i++;
+        }
+    }
 }

@@ -33,10 +33,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         items = tmp;
     }
 
-    public int getLength() {
-        return items.length;
-    }
-
     private void reduceSize() {
         if (items.length >= 16 && size * 4 < items.length) {
             int newSize = items.length / 4;
@@ -71,11 +67,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         last = moveRight(last);
         size++;
     }
-
-//    @Override
-//    public boolean isEmpty() {
-//        return size() == 0;
-//    }
 
     @Override
     public int size() {
@@ -133,8 +124,22 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ArrayDeque && ((ArrayDeque<?>) obj).size() == size()) {
+            Iterator iterator = ((ArrayDeque<?>) obj).iterator();
+            for (T item : this) {
+                if (!item.equals(iterator.next())) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             private int current = first;
             int count = 0;
 

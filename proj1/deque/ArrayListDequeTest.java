@@ -199,7 +199,7 @@ public class ArrayListDequeTest {
             lld.removeLast();
         }
 
-        System.out.println(lld.getLength());
+//        System.out.println(lld.getLength());
     }
 
     @Test
@@ -216,5 +216,20 @@ public class ArrayListDequeTest {
             System.out.println(itg);
             i++;
         }
+    }
+
+    @Test
+    public void testEquals() {
+        ArrayDeque<Integer> lld = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> lld2 = new ArrayDeque<Integer>();
+        int testNum = 64;
+        for (int i = 0; i < testNum; i++) {
+            lld.addLast(i);
+            lld2.addLast(i);
+        }
+        lld.addLast(3);
+        lld2.addLast(3);
+
+        System.out.println(lld.equals(lld2));
     }
 }

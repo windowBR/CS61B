@@ -114,10 +114,21 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return pointer.value;
     }
 
+    public T getRecursive(int index) {
+        if (isEmpty() || index >= size()) {
+            return null;
+        }
+        if (index == 0) {
+            return sentinel.next.value;
+        } else {
+            return getRecursive(index - 1);
+        }
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof LinkedListDeque && ((LinkedListDeque<?>) obj).size() == size()) {
-            Iterator iterator = ((LinkedListDeque<?>) obj).iterator();
+            Iterator<?> iterator = ((LinkedListDeque<?>) obj).iterator();
             for (T item : this) {
                 if (!item.equals(iterator.next())) {
                     return false;

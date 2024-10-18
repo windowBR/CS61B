@@ -5,7 +5,7 @@ import java.util.Iterator;
 public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     private int size;
-    Node sentinel;
+    private final Node sentinel;
 
     private class Node {
         Node prev = null;
@@ -48,11 +48,6 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
         size++;
     }
-
-//    @Override
-//    public boolean isEmpty() {
-//        return size() == 0;
-//    }
 
     @Override
     public int size() {
@@ -131,8 +126,8 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof LinkedListDeque && ((LinkedListDeque<?>) obj).size() == size()) {
-            Iterator<?> iterator = ((LinkedListDeque<?>) obj).iterator();
+        if (obj instanceof Deque && ((Deque<?>) obj).size() == size()) {
+            Iterator<?> iterator = ((Deque<?>) obj).iterator();
             for (T item : this) {
                 if (!item.equals(iterator.next())) {
                     return false;

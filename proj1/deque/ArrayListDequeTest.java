@@ -15,7 +15,7 @@ public class ArrayListDequeTest {
      * && is the "and" operation. */
     public void addIsEmptySizeTest() {
 
-//        System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
+
 
         ArrayDeque<String> lld1 = new ArrayDeque<String>();
 
@@ -42,7 +42,6 @@ public class ArrayListDequeTest {
     /** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
     public void addRemoveTest() {
 
-//        System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
         ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
         // should be empty
@@ -62,7 +61,6 @@ public class ArrayListDequeTest {
     /* Tests removing from an empty deque */
     public void removeEmptyTest() {
 
-//        System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
 
         ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
@@ -105,7 +103,6 @@ public class ArrayListDequeTest {
     /* check if null is return when removing from an empty ArrayDeque. */
     public void emptyNullReturnTest() {
 
-//        System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
         ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
 
@@ -121,7 +118,6 @@ public class ArrayListDequeTest {
     /* Add large number of elements to deque; check if order is correct. */
     public void bigLLDequeTest() {
 
-//        System.out.println("Make sure to uncomment the lines below (and delete this print statement).");
 
         ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
         for (int i = 0; i < 1000000; i++) {

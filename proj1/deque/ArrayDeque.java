@@ -126,12 +126,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Deque && ((Deque) obj).size() == size()) {
-            Iterator iterator;
-            if (obj instanceof LinkedListDeque) {
-                iterator = ((LinkedListDeque) obj).iterator();
-            } else {
-                iterator = ((ArrayDeque) obj).iterator();
-            }
+            Iterator iterator = ((Iterable) obj).iterator();
             for (T item : this) {
                 if (!item.equals(iterator.next())) {
                     return false;

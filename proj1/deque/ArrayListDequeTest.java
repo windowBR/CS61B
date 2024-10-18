@@ -1,6 +1,5 @@
 package deque;
 
-import jh61b.junit.In;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

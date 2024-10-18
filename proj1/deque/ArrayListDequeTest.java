@@ -213,7 +213,7 @@ public class ArrayListDequeTest {
     @Test
     public void testEquals() {
         ArrayDeque<Integer> lld = new ArrayDeque<Integer>();
-        ArrayDeque<Integer> lld2 = new ArrayDeque<Integer>();
+        LinkedListDeque<Integer> lld2 = new LinkedListDeque<Integer>();
         int testNum = 64;
         for (int i = 0; i < testNum; i++) {
             lld.addLast(i);

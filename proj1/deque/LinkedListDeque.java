@@ -127,7 +127,12 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Deque && ((Deque) obj).size() == size()) {
-            Iterator iterator = ((Deque) obj).iterator();
+            Iterator iterator;
+            if (obj instanceof LinkedListDeque) {
+                iterator = ((LinkedListDeque) obj).iterator();
+            } else {
+                iterator = ((ArrayDeque) obj).iterator();
+            }
             for (T item : this) {
                 if (!item.equals(iterator.next())) {
                     return false;

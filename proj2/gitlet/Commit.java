@@ -2,6 +2,8 @@ package gitlet;
 
 // TODO: any imports you need here
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date; // TODO: You'll likely use this in this class
 
 /** Represents a gitlet commit object.
@@ -10,7 +12,7 @@ import java.util.Date; // TODO: You'll likely use this in this class
  *
  *  @author TODO
  */
-public class Commit {
+public class Commit implements Serializable {
     /**
      * TODO: add instance variables here.
      *
@@ -18,9 +20,37 @@ public class Commit {
      * comment above them describing what that variable represents and how that
      * variable is used. We've provided one example for `message`.
      */
-
+    private final Date timestamp;
     /** The message of this Commit. */
-    private String message;
+    private final String message;
+    private final String parentId;
+    private ArrayList<String> blobsId;
 
     /* TODO: fill in the rest of this class. */
+
+    public Commit(String parent, String message) {
+        if (parent.equals("null")) {
+            this.timestamp = new Date(0);
+        }else {
+            this.timestamp = new Date();
+        }
+        this.parentId = parent;
+        this.message = message;
+    }
+
+    public String getCommitHash() {
+        StringBuilder commitInfo = new StringBuilder();
+        commitInfo.append(this.parentId);
+        commitInfo.append(this.timestamp);
+        commitInfo.append(this.message);
+        if (blobsId == null) {
+            commitInfo.append("null");
+        }else {
+            for (String str: blobsId) {
+                commitInfo.append(str);
+            }
+        }
+
+        return Utils.sha1(commitInfo.toString());
+    }
 }

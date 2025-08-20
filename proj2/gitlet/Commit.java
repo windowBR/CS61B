@@ -3,8 +3,9 @@ package gitlet;
 // TODO: any imports you need here
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date; // TODO: You'll likely use this in this class
+import java.util.HashSet;
+import java.util.Set;
 
 /** Represents a gitlet commit object.
  *  TODO: It's a good idea to give a description here of what else this Class
@@ -24,7 +25,7 @@ public class Commit implements Serializable {
     /** The message of this Commit. */
     private final String message;
     private final String parentId;
-    private ArrayList<String> blobsId;
+    private Set<String> blobsId = new HashSet<>();
 
     /* TODO: fill in the rest of this class. */
 
@@ -50,7 +51,6 @@ public class Commit implements Serializable {
                 commitInfo.append(str);
             }
         }
-
         return Utils.sha1(commitInfo.toString());
     }
 }

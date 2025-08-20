@@ -2,6 +2,10 @@ package gitlet;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static gitlet.Utils.*;
 
@@ -21,11 +25,11 @@ public class Repository implements Serializable {
      * comment above them describing what that variable represents and how that
      * variable is used. We've provided two examples for you.
      */
+    private Map<String, String> stagingArea = new HashMap<>();
+    private Set<String> commits = new HashSet<>();
+    private Commit Master;
+    private Commit HEAD;
 
-    /** The Master pointer */
-    public  Commit Master;
-    /** The current HEAD pointer */
-    public Commit HEAD;
     /** The current working directory. */
     public static final File CWD = new File(System.getProperty("user.dir"));
     /** The .gitlet directory. */
@@ -38,13 +42,21 @@ public class Repository implements Serializable {
             System.out.println("A Gitlet version-control system already exists in the current directory.");
             System.exit(0);
         }
+
         GITLET_DIR.mkdir();
+
+        // 创建并持久化 repo 对象
+        Repository repo = new Repository();
+        writeObject(join(GITLET_DIR, "repo"), repo);
+
+        // 创建 object 目录并提交第一个 Commit
         new File(GITLET_DIR, "object").mkdir();
         Commit firstCommit = new Commit("null", "initial commit");
-        submitCommit(firstCommit);
+        repo.submitCommit(firstCommit);
+        repo.commits.add(firstCommit.getCommitHash());
     }
 
-    public static void submitCommit(Commit commit) {
+    public void submitCommit(Commit commit) {
         String sha1code = commit.getCommitHash();
         File directory = join(GITLET_DIR, "object", sha1code.substring(0, 2));
         File fileName = join(directory, sha1code);
@@ -52,17 +64,6 @@ public class Repository implements Serializable {
         if (!(directory.exists())) {
             directory.mkdir();
         }
-        /**
-         * TODO: 修bug
-         * java gitlet.Main init
-         * Exception in thread "main" java.lang.IllegalArgumentException: cannot overwrite directory
-         *         at gitlet.Utils.writeContents(Utils.java:121)
-         *         at gitlet.Utils.writeObject(Utils.java:157)
-         *         at gitlet.Repository.submitCommit(Repository.java:54)
-         *         at gitlet.Repository.init(Repository.java:44)
-         *         at gitlet.Main.main(Main.java:22)
-         */
-
         writeObject(fileName, commit);
     }
 }

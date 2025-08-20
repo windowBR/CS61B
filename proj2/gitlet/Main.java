@@ -1,5 +1,8 @@
 package gitlet;
 
+import java.io.File;
+
+
 /** Driver class for Gitlet, a subset of the Git version-control system.
  *  @author windowbr
  */
@@ -13,6 +16,11 @@ public class Main {
         if (args.length == 0) {
             System.out.println("Please enter a command.");
             System.exit(0);
+        }
+
+        File repoFile = Utils.join(Repository.GITLET_DIR, "repo");
+        if(repoFile.exists()) {
+            Repository repo = loadRepo();
         }
 
         String firstArg = args[0];
@@ -29,6 +37,14 @@ public class Main {
                 System.out.println("No command with that name exists.");
                 System.exit(0);
                 break;
+        }
+    }
+
+    public static Repository loadRepo() {
+        try {
+            return Utils.readObject(Utils.join(Repository.GITLET_DIR, "repo"), Repository.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }   

@@ -12,26 +12,58 @@ public class Main {
      *  <COMMAND> <OPERAND1> <OPERAND2> ... 
      */
     public static void main(String[] args) {
-        // TODO: what if args is empty?
         if (args.length == 0) {
             System.out.println("Please enter a command.");
             System.exit(0);
         }
 
-        File repoFile = Utils.join(Repository.GITLET_DIR, "repo");
-        if(repoFile.exists()) {
-            Repository repo = loadRepo();
-        }
-
         String firstArg = args[0];
         switch(firstArg) {
             case "init":
-                // TODO: handle the `init` command
                 Repository.init();
                 break;
             case "add":
+                if(args.length != 2) {
+                    System.out.println("Incorrect operands.");
+                    System.exit(0);
+                }
+                getRepo().add(args[1]);
                 // TODO: handle the `add [filename]` command
                 break;
+            case  "commit":
+                // TODO: handle the `commit [message]` command
+                break;
+            case "rm":
+                // TODO: handle the `rm [filename]` command
+                break;
+            case "log":
+                // TODO: handle the `log` command
+                break;
+            case "global-log":
+                // TODO: handle the `global-log` command
+                break;
+            case "find":
+                // TODO: handle the `find [message]` command
+                break;
+            case "status":
+                // TODO: handle the `status` command
+                break;
+            case "checkout":
+                // TODO: handle the `checkout` command
+                break;
+            case "branch":
+                // TODO: handle the `branch [branch name]` command
+                break;
+            case "rm-branch":
+                // TODO: handle the `rm-branch [branch name]` command
+                break;
+            case "reset":
+                // TODO: handle the `reset [commit id]` command
+                break;
+            case "merge":
+                // TODO: handle the `merge [branch name]` command
+                break;
+
             // TODO: FILL THE REST IN
             default:
                 System.out.println("No command with that name exists.");
@@ -40,7 +72,16 @@ public class Main {
         }
     }
 
-    public static Repository loadRepo() {
+
+    /** 若不存在 .gitlet 目录则打印 "Not in an initialized Gitlet directory." 并退出程序
+     * @return .gitlet 目录中的 Repository 对象
+     */
+    public static Repository getRepo() {
+        File repoFile = Utils.join(Repository.GITLET_DIR, "repo");
+        if(!repoFile.exists()) {
+            System.out.println("Not in an initialized Gitlet directory.");
+            System.exit(0);
+        }
         try {
             return Utils.readObject(Utils.join(Repository.GITLET_DIR, "repo"), Repository.class);
         } catch (Exception e) {

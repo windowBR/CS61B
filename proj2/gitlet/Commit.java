@@ -2,7 +2,6 @@ package gitlet;
 
 // TODO: any imports you need here
 
-import java.io.Serializable;
 import java.util.Date; // TODO: You'll likely use this in this class
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +12,7 @@ import java.util.Set;
  *
  *  @author TODO
  */
-public class Commit implements Serializable {
+public class Commit implements Savable {
     /**
      * TODO: add instance variables here.
      *
@@ -30,7 +29,7 @@ public class Commit implements Serializable {
     /* TODO: fill in the rest of this class. */
 
     public Commit(String parent, String message) {
-        if (parent.equals("null")) {
+        if (parent == null) {
             this.timestamp = new Date(0);
         }else {
             this.timestamp = new Date();
@@ -39,7 +38,8 @@ public class Commit implements Serializable {
         this.message = message;
     }
 
-    public String getCommitHash() {
+    @Override
+    public String getSha1() {
         StringBuilder commitInfo = new StringBuilder();
         commitInfo.append(this.parentId);
         commitInfo.append(this.timestamp);

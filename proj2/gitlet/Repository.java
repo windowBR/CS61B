@@ -18,8 +18,8 @@ import static gitlet.Utils.*;
  */
 public class Repository implements Savable {
 
-    private Map<String, String> stagingArea = new HashMap<>(); // 键值对为 对应文件路径:Blob_sha1
-    private Set<String> commits = new HashSet<>(); // 存储所有 commit 的 sha1
+    private Map<String, String> stagingArea = new HashMap<>(); // 存储暂存区的 Blob，键值对为 "Path:Blob_sha1"
+    private Set<String> commits = new HashSet<>(); // 以 sha1 形式存储所有已提交的 commit
     private Commit Master;
     private Commit HEAD;
 
@@ -64,6 +64,14 @@ public class Repository implements Savable {
             System.exit(0);
         }
         Blob blob = new Blob(file);
+        /* Main TODO: 完成 add 方法
+            1. 将文件对应的 Blob 存入对象存储区
+            2. 将文件路径和 Blob sha1 存入暂存区
+            3. 若文件内容未修改且已提交，则不进行任何操作
+         */
+        saveObject(blob);
+        stagingArea.put(filePath, blob.getSha1());
+
     }
 
 
@@ -71,8 +79,13 @@ public class Repository implements Savable {
         saveObject(commit);
     }
 
+    /**
+     * 将传入的 object 序列化后写入到 .gitlet/object/ 目录下
+     * @param obj 要存储的对象
+     */
     public void saveObject(Savable obj) {
         String sha1code = obj.getSha1();
+        // 构造存储路径，sha1 的前两个字符为文件夹名，后面为文件名
         File directory = join(GITLET_DIR, "object", sha1code.substring(0, 2));
         File fileName = join(directory, sha1code.substring(2));
         // 判断是否存在前两个字符的文件夹
@@ -84,6 +97,10 @@ public class Repository implements Savable {
         writeObject(fileName, obj);
     }
 
+    /**
+     * 将 Repository 对象写入到 .gitlet/repo 文件中
+     * @param repo 要保存的 Repository 对象
+     */
     static void saveRepo(Repository repo) {
         writeObject(join(GITLET_DIR, "repo"), repo);
     }

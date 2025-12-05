@@ -13,6 +13,10 @@ public class Blob implements Savable {
         this.sha1 = sha1((Object) contents);
     }
 
+    /**
+     * 返回 Blob 对应文件内容的 sha1
+     * @return 文件内容的 sha1
+     */
     public String getSha1() {
         return sha1;
     }

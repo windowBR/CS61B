@@ -71,7 +71,8 @@ public class Repository implements Savable {
          */
         saveObject(blob);
         stagingArea.put(filePath, blob.getSha1());
-
+        saveRepo(this);
+        System.out.println("DEBUG: add() called - staging area status: " + stagingArea);
     }
 
 
@@ -93,7 +94,7 @@ public class Repository implements Savable {
             directory.mkdir();
         }
         // TODO: 删除调试信息
-        System.out.println("Debug: obj sha1code is " + sha1code);
+        System.out.println("DEBUG: saveObject() called \n type: " + obj.getClass().getName() + "sha1: " + sha1code);
         writeObject(fileName, obj);
     }
 

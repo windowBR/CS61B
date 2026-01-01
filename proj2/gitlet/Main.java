@@ -29,7 +29,6 @@ public class Main {
                     System.exit(0);
                 }
                 getRepo().add(args[1]);
-                // TODO: handle the `add [filename]` command
                 break;
             case  "commit":
                 checkInitialized();

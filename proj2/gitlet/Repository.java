@@ -1,6 +1,7 @@
 package gitlet;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -17,7 +18,7 @@ import static gitlet.Utils.*;
  *  @author windowbr
  */
 public class Repository implements Savable {
-
+    // Main TODO: 切换到单独的 StagingArea 类实现
     private Map<String, String> stagingArea = new HashMap<>(); // 存储暂存区的 Blob，键值对为 "Path:Blob_sha1"
     private Set<String> commits = new HashSet<>(); // 以 sha1 形式存储所有已提交的 commit
     private Commit Master;
@@ -29,6 +30,12 @@ public class Repository implements Savable {
     public static final File GITLET_DIR = join(CWD, ".gitlet");
 
     /* TODO: fill in the rest of this class. */
+    /**
+     * 初始化一个新的 gitlet 版本库，<br>
+     * 1. 先检测是否存在 .gitlet 目录，若存在则报错退出，<br>
+     * 2. 否则创建 .gitlet 目录，创建 object 目录，创建初始 Commit 并保存，<br>
+     * 3. 初始化 Master 和 HEAD 指针
+     */
     public static void init() {
         // 若存在 .gitlet 目录则直接退出
         if (GITLET_DIR.exists()) {
@@ -42,7 +49,7 @@ public class Repository implements Savable {
         // 创建 object 目录并提交第一个 Commit
         new File(GITLET_DIR, "object").mkdir();
         Commit firstCommit = new Commit(null, "initial commit");
-        repo.submitCommit(firstCommit);
+        repo.saveObject(firstCommit);
         repo.commits.add(firstCommit.getSha1());
 
         // 初始化 master 和 HEAD
@@ -51,6 +58,20 @@ public class Repository implements Savable {
 
         // 保存 repo 状态
         saveRepo(repo);
+    }
+
+    /**
+     * 提交暂存区的文件，生成新的 Commit 对象
+     * <p>
+     * 1. 读取暂存区 Blob，若为空则报错退出 <br>
+     * 2. 创建新 Commit 对象，新对象应先复制父对象（即当前 HEAD）的 Blob 列表 <br>
+     * 3. 使用暂存区的 Blob 覆盖同相同文件的 Blob <br>
+     * 4. 存储新 Commit 对象，将 HEAD 指针指向新对象
+     * </p>
+     */
+    public void commit() {
+        // TODO: 完成 commit 方法
+
     }
 
     /**
@@ -63,28 +84,26 @@ public class Repository implements Savable {
             System.out.println("File does not exist.");
             System.exit(0);
         }
-        Blob blob = new Blob(file);
-        /* Main TODO: 完成 add 方法
-            1. 将文件对应的 Blob 存入对象存储区
-            2. 将文件路径和 Blob sha1 存入暂存区
-            3. 若文件内容未修改且已提交，则不进行任何操作
-         */
+
+        // 计算文件相对于仓库根目录的路径，后续使用应以该路径为主
+        Path relativePath = Repository.CWD.toPath()
+                .toAbsolutePath()
+                .relativize(file.toPath().toAbsolutePath());
+
+        Blob blob = new Blob(relativePath, readContents(file));
         saveObject(blob);
+
         stagingArea.put(filePath, blob.getSha1());
         saveRepo(this);
         System.out.println("DEBUG: add() called - staging area status: " + stagingArea);
     }
 
 
-    public void submitCommit(Commit commit) {
-        saveObject(commit);
-    }
-
     /**
      * 将传入的 object 序列化后写入到 .gitlet/object/ 目录下
      * @param obj 要存储的对象
      */
-    public void saveObject(Savable obj) {
+    private void saveObject(Savable obj) {
         String sha1code = obj.getSha1();
         // 构造存储路径，sha1 的前两个字符为文件夹名，后面为文件名
         File directory = join(GITLET_DIR, "object", sha1code.substring(0, 2));
@@ -102,7 +121,7 @@ public class Repository implements Savable {
      * 将 Repository 对象写入到 .gitlet/repo 文件中
      * @param repo 要保存的 Repository 对象
      */
-    static void saveRepo(Repository repo) {
+    private static void saveRepo(Repository repo) {
         writeObject(join(GITLET_DIR, "repo"), repo);
     }
 

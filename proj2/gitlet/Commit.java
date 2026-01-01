@@ -1,8 +1,6 @@
 package gitlet;
 
-// TODO: any imports you need here
-
-import java.util.Date; // TODO: You'll likely use this in this class
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,7 +8,7 @@ import java.util.Set;
  *  TODO: It's a good idea to give a description here of what else this Class
  *  does at a high level.
  *
- *  @author TODO
+ *  @author windowbr
  */
 public class Commit implements Savable {
     /**
@@ -33,11 +31,17 @@ public class Commit implements Savable {
             this.timestamp = new Date(0);
         }else {
             this.timestamp = new Date();
+
         }
         this.parentId = parent;
         this.message = message;
     }
 
+
+    /**
+     * 拼接 parentId、timestamp、message 和 blobsId 并计算 sha1 值
+     * @return sha1 字符串
+     */
     @Override
     public String getSha1() {
         StringBuilder commitInfo = new StringBuilder();
